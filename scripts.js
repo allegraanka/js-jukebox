@@ -1,38 +1,65 @@
-var jboxAudio = document.getElementById('jbox-audio');
-var jboxPlayButton = document.getElementById('jbox-play-button');
-var jboxSkipButton = document.getElementById('jbox-skip-button');
+var audio = document.getElementsByClassName('songs');
+var playButton = document.getElementById('play');
+var skipPrevButton = document.getElementById('skipPrev');
+var skipNextButton = document.getElementById('skipNext');
+var songTitle = document.getElementById('songTitle');
+var currentSong = 0;
 
-function Jukebox() {
-  jboxAudio = document.getElementById('jbox-audio'),
-  jboxPlayButton = document.getElementById('jbox-play-button'),
-  jboxSkipButton = document.getElementById('jbox-skip-button'),
-  songs = [{
-    id: 0,
-    url: "songs/walls.mp3"
-  }, {
-    id: 1,
-    url: "songs/even-bees.mp3"
-  }],
-  currentSong = 0;
-    function playSong() { // play function
-      jboxAudio.src = this.songs[this.currentSong].src;
-    }
-    nextSong = function() { // skips to the next song
-      this.currentSong++;
-      this.playSong();
-    }
-  }
+function Song(title, artist, src) {
+  this.title = title,
+  this.artist = artist,
+  this.src = src
+}
 
-  function switchState() { //toggles play/stop button
-    if (jboxAudio.paused == true) {
-      jboxAudio.play();
-      jboxPlayButton.innerHTML = 'stop';
-    } else {
-      jboxAudio.pause();
-      jboxPlayButton.innerHTML = 'play';
-    }
-  }
+var futureMe = new Song("Future Me", "Worriers", 'songs/future-me.mp3');
+var notYourType = new Song("Not Your Type", "Worriers", 'songs/not-your-type.mp3');
 
-jboxPlayButton.addEventListener('click', switchState, false);
+function Jukebox(songs = []) {
+  this.songs = songs,
+  this.currentSong = 0,
+  this.addSong = function(s) {
+  this.songs.push(s);
+ }
+}
 
-window.onload = Jukebox();
+  Jukebox.prototype.playSong = function() {
+    songs.src = this.songs[this.currentSong.src];
+    songTitle.innerHTML = "now playing: " + this.songs[this.currentSong.title] + " " + "by: " + this.songs[this.currentSong.artist];
+    this.play();
+}
+
+  Jukebox.prototype.skipNext = function() {
+    this.currentSong++;
+    this.currentSong %= this.songs.length;
+    songs.src = this.songs[this.currentSong.src];
+    this.play();
+}
+
+  Jukebox.prototype.skipPrev = function() {
+    this.currentSong--;
+    this.currentSong %= this.songs.length;
+    songs.src = this.songs[this.currentSong.src];
+    this.play();
+}
+
+  Jukebox.prototype.stopSong = function() {
+    songs.pause();
+    songs.currentTime = 0;
+}
+
+var myJukebox = new Jukebox();
+
+myJukebox.addSong(futureMe);
+myJukebox.addSong(notYourType);
+
+ function switchState() { //toggles play/stop button
+   if (songs.paused == true) {
+     songs.play();
+     playButton.innerHTML = 'pause';
+   } else {
+     songs.pause();
+     playButton.innerHTML = 'play';
+   }
+ }
+
+window.onload = myJukebox.playSong();

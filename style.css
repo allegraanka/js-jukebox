@@ -1,3 +1,4 @@
+
 body {
   display: flex;
   justify-content: center;
@@ -7,12 +8,28 @@ body {
   background-repeat: no-repeat;
 }
 
-@font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-}
-
 ul {
   list-style-type: none;
+}
+
+div {
+  padding: 2%;
+  margin: auto;
+}
+
+h2, h3 {
+  color: white;
+  font-size: 2.4em;
+}
+
+.player-logo {
+  float: left;
+}
+
+.player {
+  float: right;
+}
+
+.controls {
+  clear: both;
 }
